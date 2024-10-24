@@ -21,8 +21,8 @@ export default class extends EventStructure {
 
         this.client.user.setActivity({
             type: ActivityType.Custom,
-            name: "Bia",
-            state: "🐝 Zumbindo de alegria!",
+            name: "Projeto Ygg",
+            state: "Glory!",
         })
 
         await consoleTable("Info", botInfo)
