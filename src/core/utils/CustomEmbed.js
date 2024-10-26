@@ -1,6 +1,10 @@
 import { EmbedBuilder } from "@discordjs/builders";
-import { RestOrArray } from "discord.js"
-import { APIEmbedField } from "discord-api-types/v10"
+/**
+ * @typedef {Object} EmbedField
+ * @property {string} name - O nome do campo. Deve ter um limite de 256 caracteres.
+ * @property {string} value - O valor do campo. Deve ter um limite de 1024 caracteres.
+ * @property {boolean} [inline] - (Opcional) Indica se o campo deve ser exibido inline.
+ */
 
 /**
  * Classe para criar embeds de erro personalizados para mensagens no Discord.
@@ -73,7 +77,7 @@ export class ProductStockEmbed {
     /**
      * Construtor para a classe ProductStockEmbed.
      * @param {string} message - A mensagem descritiva do estoque a ser exibida.
-     * @param {RestOrArray<APIEmbedField>} fields - Um array de objetos representando os campos a serem adicionados ao embed. 
+     * @param {EmbedField[]} fields - Um array de objetos representando os campos a serem adicionados ao embed. 
      *                                  Cada objeto deve ter `name` e `value` como propriedades.
      */
     constructor(message, fields) {
