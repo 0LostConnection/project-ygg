@@ -65,6 +65,38 @@ export default class extends Database {
         }
     }
 
+    /**
+    * Obtém o nome de uma categoria de estoque com base em seu ID.
+    * @param {string} idCategoria - O ID da categoria a ser buscada.
+    * @returns {Promise<{ success: boolean, message: string, nomeCategoria?: string, error?: string }>} 
+    * Retorna um objeto com:
+    * - `success`: booleano indicando o sucesso da operação,
+    * - `message`: uma mensagem de sucesso ou erro,
+    * - `nomeCategoria` (opcional): nome da categoria encontrada,
+    * - `error` (opcional): mensagem de erro, caso ocorra uma falha.
+    */
+    async obterNomeCategoria(idCategoria) {
+        try {
+            // Procura a categoria por id
+            const categoria = await CategoriaEstoque.findById(idCategoria)
+
+            // Verifica a existência da categoria
+            if (!categoria) {
+                return { success: false, message: "Categoria não encontrada!" }
+            }
+
+            // Se existir, retorna o nome da categoria
+            return {
+                success: true,
+                message: "Categoria encontrada com sucesso!",
+                nomeCategoria: categoria.nome
+            }
+
+        } catch (err) {
+            return { success: false, message: "Erro ao buscar categoria.", error: err.message }
+        }
+    }
+
     // Itens
     /**
      * Lista todos os itens de uma categoria específica.
