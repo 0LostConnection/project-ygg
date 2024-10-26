@@ -2,6 +2,7 @@ import CommandStructure from "../../core/structures/CommandStructure"
 import { CommandInteraction } from "discord.js"
 import { ApplicationCommandOptionType } from "discord-api-types/v10"
 import EstoqueDB from "../../core/database/EstoqueDB"
+import { ErrorEmbed, SuccessEmbed } from "../../core/utils/customEmbed"
 
 export default class extends CommandStructure {
     constructor(interaction) {
@@ -20,26 +21,24 @@ export default class extends CommandStructure {
             ]
         })
     }
+
     /**
     * @param {CommandInteraction} interaction
     **/
     run = async (interaction) => {
         await interaction.deferReply()
+        const estoqueDB = new EstoqueDB()
+        await estoqueDB.connect()
 
-        const nomeCategoria = interaction.options.get("nome").value
+        const nomeNovaCategoria = interaction.options.get("nome").value
+        const novaCategoria = await estoqueDB.criarCategoria(nomeNovaCategoria)
 
-        const db = new EstoqueDB(process.env.MONGODB_URI)
-        await db.connect()
+        await estoqueDB.disconnect()
 
-        const categoria = await db.criarCategoria(nomeCategoria)
-
-        if (!categoria.success) {
-            return interaction.editReply(`${categoria.message}`)
+        if (!novaCategoria.success) {
+            return interaction.editReply({ embeds: [new ErrorEmbed(novaCategoria.message, novaCategoria.error ? `\`\`\`${novaCategoria.error}\`\`\`` : null)] })
         }
 
-        interaction.editReply({ content: categoria.message })
-
-        await db.disconnect()
-
+        interaction.editReply({ embeds: [new SuccessEmbed(novaCategoria.message)] })
     }
 }
