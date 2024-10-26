@@ -27,6 +27,7 @@ export default class extends CommandStructure {
     **/
     run = async (interaction) => {
         await interaction.deferReply()
+        
         const estoqueDB = new EstoqueDB()
         await estoqueDB.connect()
 
