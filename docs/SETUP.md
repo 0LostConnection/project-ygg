@@ -1,12 +1,12 @@
 # 🛠️ Requisitos para rodar o projeto
 
 1. **Setup do ambiente:**
-    * Node v20.15.0
+    * Bun 1.1.31
 
 2. **Como rodar na minha máquina?**
     * Clone o projeto `git clone https://github.com/<USER>/<REPOSITORY>.git`
 
-    * Execute `npm install` ou `bun install`
+    * Execute `bun install`
 
     * Configure as variáveis de ambiente (`.env`):
 
@@ -14,7 +14,7 @@
         BOT_TOKEN=
         CLIENT_ID=
         DEBUG_GUILD_ID=
-        MONGODB_URI= <- Não está sendo usada no momento, desconsidere
+        MONGODB_URI=
         ```
 
-    * Execute `node index.js` ou `bun index.js`
+    * Execute ou `bun index.js`
