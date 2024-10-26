@@ -4,4 +4,4 @@
 
 ## Documentação
 >
-> [Rodando o Projeto](./docs/SETUP.md)<br>
+> [Rodando o Projeto](./docs/SETUP.md)
