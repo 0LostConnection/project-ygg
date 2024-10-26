@@ -1,59 +1,38 @@
-import hexToDecimal from "./hexToDecimal.js"
-import { EmbedBuilder } from "@discordjs/builders"
-import { GuildMember } from "discord.js"
+import { EmbedBuilder } from "@discordjs/builders";
 
 /**
- * @param {string} projectName
- * @param {GuildMember} author
+ * Classe para criar embeds de erro personalizados para mensagens no Discord.
+ * Utiliza o EmbedBuilder para configurar uma mensagem de erro com cor e descrição.
  */
-export function newProjectEmbedMessage(projectName, author) {
-    return new EmbedBuilder()
-        .setColor(hexToDecimal("5bff81"))
-        .setTitle(`Novo Projeto: \`${projectName}\`! 😁`)
-        .setFooter({
-            text: `Por: ${author.displayName}`,
-            iconURL: author.avatarURL(),
-        })
+export class ErrorEmbed {
+    /**
+     * Construtor para a classe ErrorEmbed.
+     * @param {string} message - A mensagem descritiva do erro.
+     * @param {string} [error] - (Opcional) Detalhes específicos da mensagem de erro, que será exibida em um campo adicional.
+     */
+    constructor(message, error) {
+        let embed = new EmbedBuilder()
+            .setColor(4009202) // Define a cor do embed
+            .setDescription(message) // Define a descrição principal do embed
+
+        if (error) {
+            // Adiciona um campo com detalhes do erro, se especificado
+            embed.addFields({
+                name: "Mensagem de Erro:",
+                value: error
+            })
+            embed.setColor(15871037)
+        }
+        return embed
+    }
 }
 
-/**
- * @param {string} projectName
- * @param {GuildMember} author
- */
-export function finishedProjectEmbedMessage(projectName, author) {
-    return new EmbedBuilder()
-        .setColor(hexToDecimal("5bff81"))
-        .setTitle(`Projeto: \`${projectName}\` concluído! 🎉`)
-        .setFooter({
-            text: `Por: ${author.displayName}`,
-            iconURL: author.avatarURL(),
-        })
-}
+export class SuccessEmbed {
+    constructor(message) {
+        let embed = new EmbedBuilder()
+            .setColor(6218828) // Define a cor do embed
+            .setDescription(message) // Define a descrição principal do embed
 
-/**
- * @param {string} projectName
- * @param {GuildMember} author
- */
-export function openedProjectEmbedMessage(projectName, author) {
-    return new EmbedBuilder()
-        .setColor(hexToDecimal("5bff81"))
-        .setTitle(`Projeto: \`${projectName}\` aberto novamente! 😁`)
-        .setFooter({
-            text: `Por: ${author.displayName}`,
-            iconURL: author.avatarURL(),
-        })
-}
-
-/**
- * @param {string} projectName
- * @param {GuildMember} author
- */
-export function archivedProjectEmbedMessage(projectName, author) {
-    return new EmbedBuilder()
-        .setColor(hexToDecimal("ff815b"))
-        .setTitle(`Projeto: \`${projectName}\` arquivado! 😕`)
-        .setFooter({
-            text: `Por: ${author.displayName}`,
-            iconURL: author.avatarURL(),
-        })
+        return embed
+    }
 }
