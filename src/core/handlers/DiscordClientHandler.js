@@ -1,5 +1,5 @@
 import { log } from "../utils/loggingUtils.js"
-import config from "../config.js"
+//import config from "../config.js"
 import { Client, Collection, REST, Routes } from "discord.js"
 import { readdirSync } from "fs"
 
@@ -8,7 +8,7 @@ export default class extends Client {
         super(intents)
         this.slashCommands = new Collection()
         this.events = new Collection()
-        this.config = config
+        //this.config = config
         this.loadCommands()
         this.loadEvents()
     }
