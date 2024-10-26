@@ -2,7 +2,7 @@ import DiscordClientHandler from "./src/core/handlers/DiscordClientHandler.js"
 import { GatewayIntentBits } from "discord.js"
 import "dotenv/config"
 
-/* const botInstance = new DiscordClientHandler({
+const botInstance = new DiscordClientHandler({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
@@ -10,9 +10,9 @@ import "dotenv/config"
 })
 
 botInstance.login(process.env.BOT_TOKEN)
- */
 
-import EstoqueDB from "./src/core/database/EstoqueDB.js"
+
+/* import EstoqueDB from "./src/core/database/EstoqueDB.js"
 
 async function test() {
     const connection = new EstoqueDB(process.env.MONGODB_URI)
@@ -50,4 +50,4 @@ async function test1() {
     console.log("")
 }
 
-test1()
+test1() */

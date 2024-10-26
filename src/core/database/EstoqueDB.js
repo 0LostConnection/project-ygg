@@ -7,27 +7,34 @@ export default class extends Database {
         super(process.env.MONGODB_URI)
     }
 
-    async listarItensPorCategoria(nomeCategoria) {
-        try {
-            const categoria = await CategoriaEstoque.findOne({ nome: nomeCategoria }).populate('itens')
-            return categoria.itens.map(item => ({
-                nome: item.nome,
-                descricao: item.descricao,
-                quantidade: item.quantidade
-            }))
-        } catch (err) {
-            console.error("Erro ao listar itens por categoria:", err);
-        }
-    }
-
     async criarCategoria(nome) {
         try {
             const categoria = new CategoriaEstoque({ nome: nome })
-            await categoria.save();
+            await categoria.save()
 
-            console.log(`Categoria ${nome} criada com sucesso!`)
+            return { success: true, message: `Categoria ${nome} criada com sucesso!` }
         } catch (err) {
-            console.error("Erro ao criar a categoria!", err)
+            return { success: false, message: `Erro ao criar a categoria ${nome}:\n` + err.message }
+        }
+    }
+
+    async listarItensPorCategoria(nomeCategoria) {
+        try {
+            const categoria = await CategoriaEstoque.findOne({ nome: nomeCategoria }).populate('itens')
+            if (!categoria) {
+                return { success: false, message: "Categoria não encontrada!" }
+            }
+            return {
+                success: true,
+                message: "Itens listados com sucesso!",
+                data: categoria.itens.map(item => ({
+                    nome: item.nome,
+                    descricao: item.descricao,
+                    quantidade: item.quantidade
+                }))
+            }
+        } catch (err) {
+            return { success: false, message: "Erro ao listar itens por categoria: " + err.message }
         }
     }
 
@@ -36,8 +43,7 @@ export default class extends Database {
             const categoria = await CategoriaEstoque.findOne({ nome: nomeCategoria })
 
             if (!categoria) {
-                console.log("Categoria não encontrada!")
-                return
+                return { success: false, message: "Categoria não encontrada!" }
             }
 
             const novoItem = new Item({
@@ -52,9 +58,9 @@ export default class extends Database {
             categoria.itens.push(novoItem._id)
             await categoria.save()
 
-            console.log(`Item "${nome}" adicionado à categoria "${categoria.nome}" com sucesso!`);
+            return { success: true, message: `Item "${nome}" adicionado à categoria "${categoria.nome}" com sucesso!` }
         } catch (err) {
-            console.error("Erro ao adicionar item à categoria:", err);
+            return { success: false, message: "Erro ao adicionar item à categoria: " + err.message }
         }
     }
 
@@ -63,24 +69,21 @@ export default class extends Database {
             const item = await Item.findOne({ nome: nomeItem })
 
             if (!item) {
-                console.log("Item não encontrado!")
-                return
+                return { success: false, message: "Item não encontrado!" }
             }
 
             const categoria = await CategoriaEstoque.findById(item.categoria)
 
             if (categoria) {
-                // Remover o item da lista de itens da categoria
                 categoria.itens.pull(item._id)
                 await categoria.save()
             }
 
-            // Remove item do banco de dados
             await Item.findByIdAndDelete(item._id)
 
-            console.log(`Item "${item.nome}" removido com sucesso!`);
+            return { success: true, message: `Item "${item.nome}" removido com sucesso!` }
         } catch (err) {
-            console.error("Erro ao remover item!", err)
+            return { success: false, message: "Erro ao remover item: " + err.message }
         }
     }
 
@@ -89,17 +92,15 @@ export default class extends Database {
             const item = await Item.findOne({ nome: nomeItem })
 
             if (!item) {
-                console.log("Item não encontrado!")
-                return
+                return { success: false, message: "Item não encontrado!" }
             }
 
             item.quantidade = quantidade
-            item.save()
+            await item.save()
 
-            console.log(`Item "${nomeItem}" atualizado com sucesso!`);
-
+            return { success: true, message: `Item "${nomeItem}" atualizado com sucesso!` }
         } catch (err) {
-            console.error("Erro ao atualizar item!", err)
+            return { success: false, message: "Erro ao atualizar item: " + err.message }
         }
     }
 }
