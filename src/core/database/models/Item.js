@@ -11,9 +11,9 @@ const itemSchema = new Schema({
     },
     descricao: {
         type: String,
-        required: true
+        required: false
     },
-    categoria: {
+    idCategoria: {
         type: Schema.Types.ObjectId,
         ref: 'CategoriaEstoque' // Referência ao modelo de CategoriaEstoque
     }
