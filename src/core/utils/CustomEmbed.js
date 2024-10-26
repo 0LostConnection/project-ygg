@@ -50,7 +50,7 @@ export class QuestionEmebed {
 export class ProductStockEmbed {
     constructor(message, fields) {
         let embed = new EmbedBuilder()
-            .setColor(11489267) // Define a cor do embed
+            .setColor(14581094) // Define a cor do embed
             .setDescription(message) // Define a descrição principal do embed
             .setFields(fields)
 
