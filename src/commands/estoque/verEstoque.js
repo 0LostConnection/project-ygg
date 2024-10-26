@@ -1,8 +1,8 @@
 import CommandStructure from "../../core/structures/CommandStructure"
 import { CommandInteraction } from "discord.js"
 import EstoqueDB from "../../core/database/EstoqueDB"
-import CustomSelectMenu from "../../core/utils/customSelectMenu"
-import { ErrorEmbed, ProductStockEmbed, QuestionEmebed, SuccessEmbed } from "../../core/utils/CustomEmbed"
+import CustomSelectMenu from "../../core/utils/CustomSelectMenu"
+import { ErrorEmbed, ProductStockEmbed, QuestionEmbed } from "../../core/utils/CustomEmbed"
 
 export default class extends CommandStructure {
     constructor(interaction) {
@@ -43,7 +43,7 @@ export default class extends CommandStructure {
         */
         const resposta = await interaction.editReply({
             embeds: [
-                new QuestionEmebed("Escolha uma das categorias na lista abaixo:")
+                new QuestionEmbed("Escolha uma das categorias na lista abaixo:")
             ],
             components: [
                 new CustomSelectMenu(
