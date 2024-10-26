@@ -26,7 +26,7 @@ export default class extends Database {
         try {
             // Verifica a existência da categoria
             if (await CategoriaEstoque.findOne({ nome: nome })) {
-                return { success: false, message: "Essa categoria já existe!" }
+                return { success: false, message: `A categoria **${nome}** já existe!` }
             }
 
             // Instancia uma nova categoria e a salva
@@ -119,7 +119,7 @@ export default class extends Database {
 
             // Verifica a existência do item pelo nome e pelo id da categoria
             if (await Item.findOne({ nome: nome, idCategoria: categoria._id })) {
-                return { success: false, message: "Esse item já existe!" }
+                return { success: false, message: `O item **${nome}** já existe!` }
             }
 
             // Instancia um novo item e o salva
