@@ -26,20 +26,28 @@ export default class extends CommandStructure {
     * @param {CommandInteraction} interaction
     **/
     run = async (interaction) => {
+        // Deferindo a resposta para indicar que o bot está processando a solicitação
         await interaction.deferReply()
 
+        // Instancia o banco de dados e conecta
         const estoqueDB = new EstoqueDB()
         await estoqueDB.connect()
 
+        // Obtém o nome da nova categoria
         const nomeNovaCategoria = interaction.options.get("nome").value
+
+        // Cria a nova categoria
         const novaCategoria = await estoqueDB.criarCategoria(nomeNovaCategoria)
 
+        // Desconecta do banco de dados
         await estoqueDB.disconnect()
 
+        // Valida se o processo ocorreu com erro
         if (!novaCategoria.success) {
             return interaction.editReply({ embeds: [new ErrorEmbed(novaCategoria.message, novaCategoria.error ? `\`\`\`${novaCategoria.error}\`\`\`` : null)] })
         }
 
+        // Confirma a criação da nova categoria
         interaction.editReply({ embeds: [new SuccessEmbed(novaCategoria.message)] })
     }
 }
