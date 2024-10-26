@@ -36,3 +36,13 @@ export class SuccessEmbed {
         return embed
     }
 }
+
+export class QuestionEmebed {
+    constructor(message) {
+        let embed = new EmbedBuilder()
+            .setColor(11489267) // Define a cor do embed
+            .setDescription(message) // Define a descrição principal do embed
+
+        return embed
+    }
+}
