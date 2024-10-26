@@ -2,7 +2,7 @@ import CommandStructure from "../../core/structures/CommandStructure"
 import { CommandInteraction } from "discord.js"
 import { ApplicationCommandOptionType } from "discord-api-types/v10"
 import EstoqueDB from "../../core/database/EstoqueDB"
-import { ErrorEmbed, SuccessEmbed } from "../../core/utils/customEmbed"
+import { ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed"
 
 export default class extends CommandStructure {
     constructor(interaction) {
@@ -27,7 +27,7 @@ export default class extends CommandStructure {
     **/
     run = async (interaction) => {
         await interaction.deferReply()
-        
+
         const estoqueDB = new EstoqueDB()
         await estoqueDB.connect()
 
