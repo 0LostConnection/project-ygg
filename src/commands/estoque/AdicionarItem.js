@@ -50,7 +50,7 @@ export default class extends CommandStructure {
         // Valida se a operação ocorreu com sucesso
         if (!categorias.success) {
             // Desconecta do banco de dados
-            estoqueDB.disconnect()
+            await estoqueDB.disconnect()
 
             return await interaction.editReply({
                 embeds: [
@@ -106,7 +106,7 @@ export default class extends CommandStructure {
             )
 
             // Desconecta do banco de dados
-            estoqueDB.disconnect()
+            await estoqueDB.disconnect()
 
             // Valida se a operação ocorreu com sucesso
             if (!novoItem.success) {
