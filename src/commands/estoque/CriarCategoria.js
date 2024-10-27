@@ -44,7 +44,14 @@ export default class extends CommandStructure {
 
         // Valida se o processo ocorreu com erro
         if (!novaCategoria.success) {
-            return interaction.editReply({ embeds: [new ErrorEmbed(novaCategoria.message, novaCategoria.error ? `\`\`\`${novaCategoria.error}\`\`\`` : null)] })
+            return interaction.editReply({
+                embeds: [
+                    new ErrorEmbed(
+                        novaCategoria.message,
+                        novaCategoria.error ? `\`\`\`${novaCategoria.error}\`\`\`` : null
+                    )
+                ]
+            })
         }
 
         // Confirma a criação da nova categoria

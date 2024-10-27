@@ -54,7 +54,8 @@ export default class extends CommandStructure {
 
             return await interaction.editReply({
                 embeds: [
-                    new ErrorEmbed(categorias.message,
+                    new ErrorEmbed(
+                        categorias.message,
                         categorias.error ? `\`\`\`${categorias.error}\`\`\`` : null)
                 ]
             })
@@ -112,7 +113,8 @@ export default class extends CommandStructure {
             if (!novoItem.success) {
                 return await interaction.editReply({
                     embeds: [
-                        new ErrorEmbed(novoItem.message,
+                        new ErrorEmbed(
+                            novoItem.message,
                             categorias.error ? `\`\`\`${categorias.error}\`\`\`` : null)
                     ],
                     components: []
