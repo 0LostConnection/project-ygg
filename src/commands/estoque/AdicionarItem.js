@@ -71,7 +71,7 @@ export default class extends CommandStructure {
             components: [
                 new CustomSelectMenu(
                     "estoque:selecionar:categorias",
-                    "escolha uma categoria",
+                    "Escolha uma categoria",
                     categorias.data.map(obj => ({
                         label: obj.nome,
                         value: obj.id.toString()
