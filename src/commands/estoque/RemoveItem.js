@@ -114,7 +114,7 @@ export default class extends CommandStructure {
                 components: []
             })
         }
-
+        
         const respostaItemSelectMenu = await interaction.editReply({
             embeds: [
                 new QuestionEmbed("Escolha um dos itens abaixo para remover:")
@@ -186,6 +186,5 @@ export default class extends CommandStructure {
             ],
             components: []
         })
-
     }
 }
