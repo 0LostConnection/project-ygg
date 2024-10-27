@@ -151,7 +151,7 @@ export default class extends Database {
 
             // Verifica a existência do item pelo nome e pelo id da categoria
             if (await Item.findOne({ nome: nome, idCategoria: categoria._id })) {
-                return { success: false, message: `O item **${nome}** já existe!` }
+                return { success: false, message: `O item **${nome}** já existe na categoria ${categoria.nome}!` }
             }
 
             // Instancia um novo item e o salva
@@ -169,7 +169,7 @@ export default class extends Database {
 
             return { success: true, message: `Item **${nome}** adicionado à categoria **${categoria.nome}** com sucesso!` }
         } catch (err) {
-            return { success: false, message: "Erro ao adicionar item à categoria.", error: err.message }
+            return { success: false, message: `Erro ao adicionar item à categoria ${categoria.nome}`, error: err.message }
         }
     }
 
