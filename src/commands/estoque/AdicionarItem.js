@@ -93,8 +93,10 @@ export default class extends CommandStructure {
             // Verifica se a interação é um StringSelectMenu
             if (!confirmacao.isStringSelectMenu()) return
 
+            // Obtém o id da categoria 
             const idCategoria = confirmacao.values[0]
 
+            // Adiciona o novo item na categoria
             const novoItem = await estoqueDB.adicionarItem(
                 idCategoria,
                 {
