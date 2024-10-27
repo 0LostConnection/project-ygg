@@ -115,7 +115,7 @@ export default class extends CommandStructure {
             })
         } catch (error) {
             // Caso não haja confirmação no SelectMenu, a mensagem é atualizada
-            await interaction.editReply({
+            return await interaction.editReply({
                 embeds: [
                     new ErrorEmbed("Nenhuma confirmação recebida após 1 minuto!")
                 ],
