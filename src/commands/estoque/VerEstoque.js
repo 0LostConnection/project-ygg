@@ -31,10 +31,11 @@ export default class extends CommandStructure {
         if (!categorias.success) {
             // Desconecta do banco de dados
             await estoqueDB.disconnect()
-            
+
             return await interaction.editReply({
                 embeds: [
-                    new ErrorEmbed(categorias.message,
+                    new ErrorEmbed(
+                        categorias.message,
                         categorias.error ? `\`\`\`${categorias.error}\`\`\`` : null)
                 ]
             })
