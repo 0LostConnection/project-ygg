@@ -6,6 +6,9 @@ const botInstance = new DiscordClientHandler({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        
     ],
 })
 
