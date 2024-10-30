@@ -1,25 +1,21 @@
-import CommandStructure from "../../core/structures/CommandStructure"
-import { CommandInteraction } from "discord.js"
-import { ApplicationCommandOptionType } from "discord-api-types/v10"
+import CustomSlashCommandBuilder from "../../core/builders/CustomSlashCommandBuilder"
+import { CommandInteraction, InteractionContextType, SlashCommandStringOption } from "discord.js"
 import EstoqueDB from "../../core/database/EstoqueDB"
 import { ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed"
 
-export default class extends CommandStructure {
+export default class extends CustomSlashCommandBuilder {
     constructor(interaction) {
-        super(interaction, {
-            name: "criar-categoria",
-            description: "Criar uma categoria",
-            dm_permission: false,
-            debug: true,
-            options: [
-                {
-                    type: ApplicationCommandOptionType.String,
-                    name: "nome",
-                    description: "Nome da categoria.",
-                    required: true,
-                }
-            ]
-        })
+        super()
+        this.setName("criar-categoria")
+        this.setDescription("Cria uma categoria")
+        this.setContexts(InteractionContextType.Guild)
+        this.setDebug(true)
+        this.addStringOption(
+            new SlashCommandStringOption()
+                .setName("nome")
+                .setDescription("Nome da categoria")
+                .setRequired(true)
+        )
     }
 
     /**
