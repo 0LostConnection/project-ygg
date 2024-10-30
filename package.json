@@ -12,7 +12,7 @@
         "discord-api-types": "^0.37.103",
         "discord.js": "^14.15.3",
         "dotenv": "^16.4.5",
-        "mongoose": "^8.7.2",
+        "mongoose": "^8.7.3",
         "table": "^6.8.2"
     }
 }
