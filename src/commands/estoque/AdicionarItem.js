@@ -1,32 +1,29 @@
-import CommandStructure from "../../core/structures/CommandStructure"
-import { CommandInteraction } from "discord.js"
+import CustomSlashCommandBuilder from "../../core/builders/CustomSlashCommandBuilder"
+import { CommandInteraction, InteractionContextType, SlashCommandIntegerOption, SlashCommandStringOption } from "discord.js"
 import { ApplicationCommandOptionType } from "discord-api-types/v10"
 import EstoqueDB from "../../core/database/EstoqueDB"
 import { QuestionEmbed, ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed"
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu"
 
-export default class extends CommandStructure {
+export default class extends CustomSlashCommandBuilder {
     constructor(interaction) {
-        super(interaction, {
-            name: "adicionar-item",
-            description: "Adiciona um item em uma das categorias.",
-            dm_permission: false,
-            debug: true,
-            options: [
-                {
-                    type: ApplicationCommandOptionType.String,
-                    name: "item",
-                    description: "Nome do item.",
-                    required: true
-                },
-                {
-                    type: ApplicationCommandOptionType.Integer,
-                    name: "quantidade",
-                    description: "Quantidade do item.",
-                    required: true
-                }
-            ]
-        })
+        super()
+        this.setName("adicionar-item")
+        this.setDescription("Adicionar um item em uma das categorias")
+        this.setContexts(InteractionContextType.Guild)
+        this.setDebug(true)
+        this.addStringOption(
+            new SlashCommandStringOption()
+                .setName("item")
+                .setDescription("Nome do item")
+                .setRequired(true)
+        )
+        this.addIntegerOption(
+            new SlashCommandIntegerOption()
+                .setName("quantidade")
+                .setDescription("Quantidade do item")
+                .setRequired(true)
+        )
     }
 
     /**

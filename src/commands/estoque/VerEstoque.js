@@ -1,18 +1,19 @@
-import CommandStructure from "../../core/structures/CommandStructure"
-import { CommandInteraction } from "discord.js"
+import CustomSlashCommandBuilder from "../../core/builders/CustomSlashCommandBuilder"
+import { CommandInteraction, InteractionContextType } from "discord.js"
 import EstoqueDB from "../../core/database/EstoqueDB"
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu"
 import { ErrorEmbed, ProductStockEmbed, QuestionEmbed } from "../../core/utils/CustomEmbed"
 
-export default class extends CommandStructure {
-    constructor(interaction) {
-        super(interaction, {
-            name: "ver-estoque",
-            description: "Ver estoque",
-            dm_permission: false,
-            debug: true,
-        })
+export default class extends CustomSlashCommandBuilder {
+    constructor() {
+        super()
+
+        this.setName("ver-estoque")
+        this.setDescription("Ver estoque")
+        this.setContexts(InteractionContextType.Guild)
+        this.setDebug(true)
     }
+    
     /**
     * @param {CommandInteraction} interaction
     **/

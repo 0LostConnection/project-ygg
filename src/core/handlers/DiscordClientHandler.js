@@ -29,7 +29,7 @@ export default class extends Client {
                 )
 
                 try {
-                    const command = new commandClass(this)
+                    const command = new commandClass().toJSON()
 
                     if (command.disabled) continue
 

@@ -1,20 +1,22 @@
-import CommandStructure from '../../core/structures/CommandStructure'
+import CustomSlashCommandBuilder from '../../core/builders/CustomSlashCommandBuilder'
 import { CommandInteraction } from 'discord.js'
 
-export default class extends CommandStructure {
-    constructor(interaction) {
-        super(interaction, {
-            name: "hello-world",
-            description: "[DEBUG] Um simples hello world!",
-            dm_permission: false,
-            debug: true,
-        })
+export default class extends CustomSlashCommandBuilder {
+    constructor() {
+        super()
+        this.setName("new-hello")
+        this.setDescription("[DEBUG] Hello world usando a nova classe de comando")
+        this.setDebug(true)
     }
 
     /**
-    * @param {CommandInteraction} interaction
-    **/
+     * @param {CommandInteraction} interaction 
+     */
     run = (interaction) => {
-        interaction.reply("Olá Mundo! :)")
+        if (this.isDebugEnabled()) {
+            interaction.reply("Olá Mundo! :)")
+        } else {
+            interaction.reply("Hello World :)")
+        }
     }
 }

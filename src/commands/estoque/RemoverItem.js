@@ -1,17 +1,16 @@
-import { CommandInteraction } from "discord.js";
-import CommandStructure from "../../core/structures/CommandStructure";
+import CustomSlashCommandBuilder from "../../core/builders/CustomSlashCommandBuilder"
+import { CommandInteraction, InteractionContextType } from "discord.js";
 import EstoqueDB from "../../core/database/EstoqueDB";
 import { QuestionEmbed, ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed";
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu";
 
-export default class extends CommandStructure {
-    constructor(interaction) {
-        super(interaction, {
-            name: "remover-item",
-            description: "Remove um item de uma categoria específica.",
-            dm_permission: false,
-            debug: true
-        })
+export default class extends CustomSlashCommandBuilder {
+    constructor() {
+        super()
+        this.setName("remover-item")
+        this.setDescription("Remove um item de uma categoria específica.")
+        this.setContexts(InteractionContextType.Guild)
+        this.setDebug(true)
     }
 
     /**
@@ -114,7 +113,7 @@ export default class extends CommandStructure {
                 components: []
             })
         }
-        
+
         const respostaItemSelectMenu = await interaction.editReply({
             embeds: [
                 new QuestionEmbed("Escolha um dos itens abaixo para remover:")
