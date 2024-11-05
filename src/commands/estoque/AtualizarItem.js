@@ -1,8 +1,10 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, ComponentType } from "discord.js";
 import CommandStructure from "../../core/structures/CommandStructure";
 import EstoqueDB from "../../core/database/EstoqueDB";
 import { QuestionEmbed, ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed";
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu";
+import { ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputBuilder } from "@discordjs/builders";
+import { ButtonStyle, TextInputStyle } from "discord-api-types/v10";
 
 export default class extends CommandStructure {
     constructor(interaction) {
@@ -21,47 +23,6 @@ export default class extends CommandStructure {
     run = async (interaction) => {
         // Deferindo a resposta para indicar que o bot está processando a solicitação
         await interaction.deferReply()
-
-        /* 
-        Inicio da obtenção da quantidade
-        */
-        await interaction.editReply({
-            embeds: [
-                new QuestionEmbed("Digite a quantidade à ser atualizada.\n(+N) (-N) (N)")
-            ],
-            components: []
-        })
-
-        // Filtro para o message collector
-        const filtroCollector = m => m.author.id === interaction.user.id
-
-        // Criar coletor
-        const quantidadeCollector = interaction.channel.createMessageCollector({
-            filter: filtroCollector,
-            max: 1,
-            time: 20_000,
-            errors: ['time']
-        })
-
-        await quantidadeCollector.on("collect", (message) => {
-            this.quantidade = message.content
-        })
-
-        quantidadeCollector.on("end", async (coletado, rasao) => {
-            if (rasao === "time") {
-                // Caso não haja confirmação, a mensagem é atualizada
-                return await interaction.editReply({
-                    embeds: [
-                        new ErrorEmbed("Nenhuma confirmação recebida após 1 minuto!")
-                    ]
-                })
-            }
-        })
-        console.log(this.quantidade)
-
-        return
-
-
 
         // Instancia o banco de dados e conecta
         const estoqueDB = new EstoqueDB()
@@ -203,6 +164,64 @@ export default class extends CommandStructure {
             })
         }
 
+        // Desconecta do banco de dados
+        await estoqueDB.disconnect()
 
+        /* 
+        Inicio da obtenção da quantidade.
+        */
+        const botaoQuantidade = await interaction.editReply({
+            embeds: [new QuestionEmbed("Clique nos botões abaixo para atualizar a quantidade")],
+            components: [
+                new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId("estoque:selectionar:quantidade:adicionar")
+                            .setLabel("Adicionar")
+                            .setStyle(ButtonStyle.Primary),
+                        new ButtonBuilder()
+                            .setCustomId("estoque:selectionar:quantidade:remover")
+                            .setLabel("Remover")
+                            .setStyle(ButtonStyle.Primary)
+                    )
+            ]
+        })
+
+        const collector = botaoQuantidade.createMessageComponentCollector({
+            componentType: ComponentType.Button,
+            time: 60_000,
+            filter: filtroObserver,
+            max: 1,
+        })
+
+        collector.on("collect", async i => {
+            await interaction.editReply({
+                embeds: [new QuestionEmbed("Processando...")],
+                components: []
+            })
+
+            const partes = i.customId.split(":")
+            const operacao = partes[3]
+            
+
+            const modal = new ModalBuilder()
+                .setCustomId(`estoque:atualizar:${idCategoria}:${nomeItem}:${operacao}`)
+                .setTitle("Quantidade a ser atualizada")
+                .addComponents(
+                    new ActionRowBuilder()
+                        .addComponents(
+                            new TextInputBuilder()
+                                .setCustomId("quantidade")
+                                .setLabel("Quantidade")
+                                .setStyle(TextInputStyle.Short)
+                                .setRequired(true)
+                                .setMinLength(1)
+                                .setMaxLength(5)
+                                .setPlaceholder("10")
+                        ),
+                )
+
+            i.showModal(modal)
+        })
     }
 }

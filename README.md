@@ -15,3 +15,5 @@
 - [ ] Criar sistema de logs
 - [ ] Customizar a aparência do bot
 - [ ] Usar emojis customizados nas mensagens?
+- [ ] Verificar se a operacao é undefined ou null EstoqueDB
+- [ ] Adicionar JSdocs à atualizar item EstoqueDB

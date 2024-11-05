@@ -219,7 +219,7 @@ export default class extends Database {
      * @returns {Promise<{ success: boolean, message: string, error?: string }>} 
      * Retorna um objeto com `success`, `message` e `error` (opcional).
      */
-    async atualizarQuantidadeItem(idCategoria, nomeItem, quantidade) {
+    async atualizarQuantidadeItem(idCategoria, nomeItem, quantidade, operacao) {
         try {
             // Procura a categoria por id
             const categoria = await CategoriaEstoque.findById(idCategoria)
@@ -237,8 +237,16 @@ export default class extends Database {
                 return { success: false, message: "Item não encontrado!" }
             }
 
-            // Atualiza a quantidade e salva
-            item.quantidade = quantidade
+            switch (operacao) {
+                case "adicionar":
+                    item.quantidade += quantidade
+                    break
+                case "remover":
+                    item.quantidade -= quantidade
+                    break
+            }
+
+            // Salva a quantidade atualizada
             await item.save()
 
             return { success: true, message: `Item **${nomeItem}** atualizado com sucesso!` }
