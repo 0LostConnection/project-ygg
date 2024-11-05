@@ -53,7 +53,7 @@ export default class extends CommandStructure {
 
         const respostaCategoriaSelectMenu = await interaction.editReply({
             embeds: [
-                new QuestionEmbed("Escolha umas das categorias na lista abaixo para remover o item:")
+                new QuestionEmbed("Escolha umas das categorias na lista abaixo para atualizar o item:")
             ],
             components: [
                 new CustomSelectMenu(
@@ -112,15 +112,19 @@ export default class extends CommandStructure {
 
             return await interaction.editReply({
                 embeds: [
-                    new ErrorEmbed("Nenhuma confirmação recebida após 1 minuto!")
+                    new ErrorEmbed(categorias.message,
+                        itens.error ? `\`\`\`${itens.error}\`\`\`` : null)
                 ],
                 components: []
             })
         }
 
+        // Desconecta do banco de dados
+        await estoqueDB.disconnect()
+
         const respostaItemSelectMenu = await interaction.editReply({
             embeds: [
-                new QuestionEmbed("Escolha um dos itens abaixo para remover:")
+                new QuestionEmbed("Escolha um dos itens abaixo para atualizar:")
             ],
             components: [
                 new CustomSelectMenu(
@@ -164,9 +168,6 @@ export default class extends CommandStructure {
             })
         }
 
-        // Desconecta do banco de dados
-        await estoqueDB.disconnect()
-
         /* 
         Inicio da obtenção da quantidade.
         */
@@ -202,7 +203,6 @@ export default class extends CommandStructure {
 
             const partes = i.customId.split(":")
             const operacao = partes[3]
-            
 
             const modal = new ModalBuilder()
                 .setCustomId(`estoque:atualizar:${idCategoria}:${nomeItem}:${operacao}`)
