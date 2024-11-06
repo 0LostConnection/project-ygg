@@ -1,7 +1,7 @@
 import EventBuilder from "../core/builders/EventBuilder.js"
 import { consoleTable } from "../core/utils/loggingUtils.js"
 import { ActivityType, BaseInteraction, Events } from "discord.js"
-import DiscordClientHandler from "../core/handlers/DiscordClientHandler.js"
+import CustomClient from "../core/handlers/CustomClient.js"
 
 /**
  * Evento que indica que o cliente está pronto
@@ -13,7 +13,7 @@ export default class extends EventBuilder {
     /**
      * Cria uma nova instância do evento "ready".
      * 
-     * @param {DiscordClientHandler} client - A instância do DiscordClientHandler.
+     * @param {CustomClient} client - A instância do CustomClient.
      */
     constructor(client) {
         super(client)

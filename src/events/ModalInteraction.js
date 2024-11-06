@@ -1,8 +1,8 @@
+import EventBuilder from "../core/builders/EventBuilder.js"
 import EstoqueDB from "../core/database/EstoqueDB.js"
-import EventStructure from "../core/structures/EventStructure.js"
 import { ErrorEmbed, SuccessEmbed } from "../core/utils/CustomEmbed.js"
-import { BaseInteraction, ModalSubmitInteraction } from "discord.js"
-import DiscordClientHandler from "../core/handlers/DiscordClientHandler.js"
+import { BaseInteraction, Events, ModalSubmitInteraction } from "discord.js"
+import CustomClient from "../core/handlers/CustomClient.js"
 import LogEmbedBuilder from "../core/utils/LogEmbedBuilder.js"
 
 /**
@@ -10,22 +10,21 @@ import LogEmbedBuilder from "../core/utils/LogEmbedBuilder.js"
  * Trata especificamente de interações de formulário modal para atualizar a quantidade de itens no estoque.
  * 
  * @class
- * @extends EventStructure
+ * @extends EventBuilder
  */
-export default class extends EventStructure {
+export default class extends EventBuilder {
     /**
      * Cria uma nova instância do evento "interactionCreate".
      * 
-     * @param {DiscordClientHandler} client - A instância do DiscordClientHandler.
+     * @param {CustomClient} client - A instância do CustomClient.
      */
     constructor(client) {
-        super(client, {
-            name: "interactionCreate",
-        })
+        super(client)
+        this.setName(Events.InteractionCreate)
 
         /**
-         * A instância do DiscordClientHandler.
-         * @type {DiscordClientHandler}
+         * A instância do CustomClient.
+         * @type {CustomClient}
          */
         this.client = client
     }

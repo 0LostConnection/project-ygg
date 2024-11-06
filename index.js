@@ -1,8 +1,8 @@
-import DiscordClientHandler from "./src/core/handlers/DiscordClientHandler.js"
+import CustomClient from "./src/core/handlers/CustomClient.js"
 import { GatewayIntentBits } from "discord.js"
 import "dotenv/config"
 
-const botInstance = new DiscordClientHandler({
+const botInstance = new CustomClient({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,

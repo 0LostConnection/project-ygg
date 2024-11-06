@@ -6,12 +6,12 @@ import EstoqueLogger from "../utils/EstoqueLogger.js"
 /**
  * Classe personalizada que estende o Client do Discord.js para adicionar funcionalidades específicas.
  * 
- * @class DiscordClientHandler
+ * @class CustomClient
  * @extends Client
  */
-export default class DiscordClientHandler extends Client {
+export default class CustomClient extends Client {
     /**
-     * Cria uma nova instância do DiscordClientHandler, que estende a classe Client do Discord.js.
+     * Cria uma nova instância do CustomClient, que estende a classe Client do Discord.js.
      * Este construtor inicializa as coleções de comandos e eventos, além de carregar comandos e eventos, e configurar o EstoqueLogger.
      * 
      * @param {Array} intents - A lista de intents que o bot irá usar para interagir com o Discord.

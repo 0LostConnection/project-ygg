@@ -13,7 +13,7 @@ export default class extends EventBuilder {
     /**
      * Cria uma nova instância do evento "interactionCreate".
      * 
-     * @param {DiscordClientHandler} client - A instância do DiscordClientHandler.
+     * @param {DiscordClientHandler} client - A instância do CustomClient.
      */
     constructor(client) {
         super(client)

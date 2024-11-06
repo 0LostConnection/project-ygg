@@ -1,11 +1,11 @@
 import { Events } from "discord.js"
-import DiscordClientHandler from "../handlers/DiscordClientHandler";
+import CustomClient from "../handlers/CustomClient.js";
 
 export default class EventBuilder {
     /**
      * Cria uma nova instância de EventBuilder para construir eventos do Discord.js.
      * 
-     * @param {DiscordClientHandler} client - A instância do cliente do Discord.
+     * @param {CustomClient} client - A instância do cliente do Discord.
      */
     constructor(client) {
         this.client = client
