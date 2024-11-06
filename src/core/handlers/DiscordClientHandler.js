@@ -1,16 +1,48 @@
 import { log } from "../utils/loggingUtils.js"
-//import config from "../config.js"
 import { Client, Collection, REST, Routes } from "discord.js"
 import { readdirSync } from "fs"
+import EstoqueLogger from "../utils/EstoqueLogger.js"
 
-export default class extends Client {
+/**
+ * Classe personalizada que estende o Client do Discord.js para adicionar funcionalidades específicas.
+ * 
+ * @class DiscordClientHandler
+ * @extends Client
+ */
+export default class DiscordClientHandler extends Client {
+    /**
+     * Cria uma nova instância do DiscordClientHandler, que estende a classe Client do Discord.js.
+     * Este construtor inicializa as coleções de comandos e eventos, além de carregar comandos e eventos, e configurar o EstoqueLogger.
+     * 
+     * @param {Array} intents - A lista de intents que o bot irá usar para interagir com o Discord.
+     * @extends Client
+     */
     constructor(intents) {
-        super(intents)
-        this.slashCommands = new Collection()
-        this.events = new Collection()
-        //this.config = config
-        this.loadCommands()
-        this.loadEvents()
+        super(intents);
+
+        /**
+         * Coleção de comandos slash registrados para o bot.
+         * @type {Collection}
+         */
+        this.slashCommands = new Collection();
+
+        /**
+         * Coleção de eventos registrados para o bot.
+         * @type {Collection}
+         */
+        this.events = new Collection();
+
+        // Carrega os comandos registrados
+        this.loadCommands();
+
+        // Carrega os eventos registrados
+        this.loadEvents();
+
+        /**
+         * Instância do EstoqueLogger para registrar alterações no estoque.
+         * @type {EstoqueLogger}
+         */
+        this.estoqueLogger = new EstoqueLogger(process.env.WEBHOOK_URL);
     }
 
     async loadCommands(commandsCategoriesPath = "./src/commands") {

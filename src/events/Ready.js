@@ -1,12 +1,23 @@
-import EventStructure from "../core/structures/EventStructure.js"
+import EventBuilder from "../core/builders/EventBuilder.js"
 import { consoleTable } from "../core/utils/loggingUtils.js"
-import { ActivityType, BaseInteraction } from "discord.js"
+import { ActivityType, BaseInteraction, Events } from "discord.js"
+import DiscordClientHandler from "../core/handlers/DiscordClientHandler.js"
 
-export default class extends EventStructure {
+/**
+ * Evento que indica que o cliente está pronto
+ * 
+ * @class 
+ * @extends EventBuilder
+ */
+export default class extends EventBuilder {
+    /**
+     * Cria uma nova instância do evento "ready".
+     * 
+     * @param {DiscordClientHandler} client - A instância do DiscordClientHandler.
+     */
     constructor(client) {
-        super(client, {
-            name: "ready",
-        })
+        super(client)
+        this.setName(Events.ClientReady)
     }
 
     /**
@@ -25,7 +36,7 @@ export default class extends EventStructure {
             state: "Glory!",
         })
 
-        await consoleTable("Info", botInfo)
+        consoleTable("Info", botInfo)
 
         await this.client.deployCommands()
     }

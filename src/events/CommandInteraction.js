@@ -1,12 +1,23 @@
-import EventStructure from "../core/structures/EventStructure.js"
+import EventBuilder from "../core/builders/EventBuilder.js"
 import { log } from "../core/utils/loggingUtils.js"
-import { BaseInteraction, CommandInteraction } from "discord.js"
+import { BaseInteraction, CommandInteraction, Events } from "discord.js"
 
-export default class extends EventStructure {
+/**
+ * Evento que manipula a interação do tipo "interactionCreate".
+ * Trata especificamente de interações feitas por comando
+ * 
+ * @class
+ * @extends EventStructure
+ */
+export default class extends EventBuilder {
+    /**
+     * Cria uma nova instância do evento "interactionCreate".
+     * 
+     * @param {DiscordClientHandler} client - A instância do DiscordClientHandler.
+     */
     constructor(client) {
-        super(client, {
-            name: "interactionCreate",
-        })
+        super(client)
+        this.setName(Events.InteractionCreate)
     }
 
     /**
