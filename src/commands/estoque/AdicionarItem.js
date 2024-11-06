@@ -1,6 +1,5 @@
 import CustomSlashCommandBuilder from "../../core/builders/CustomSlashCommandBuilder"
 import { CommandInteraction, InteractionContextType, SlashCommandIntegerOption, SlashCommandStringOption } from "discord.js"
-import { ApplicationCommandOptionType } from "discord-api-types/v10"
 import EstoqueDB from "../../core/database/EstoqueDB"
 import { QuestionEmbed, ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed"
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu"
