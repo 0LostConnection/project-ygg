@@ -212,16 +212,16 @@ export default class extends Database {
     }
 
     /**
-    * Atualiza a quantidade de um item no estoque, realizando uma operação de adição ou remoção.
-    * 
-    * @param {string} idCategoria - O ID da categoria à qual o item pertence.
-    * @param {string} nomeItem - O nome do item a ser atualizado.
-    * @param {number} quantidade - A quantidade a ser adicionada ou removida do item.
-    * @param {"adicionar" | "remover"} operacao - A operação a ser realizada: "adicionar" para somar à quantidade existente, ou "remover" para subtrair da quantidade existente.
-    * 
-    * @returns {Promise<{ success: boolean, message: string, error?: string }>} 
-    * Retorna uma promessa com um objeto contendo `success` (indicando sucesso ou falha), `message` (mensagem informativa) e `error` (opcional, em caso de erro).
-    */
+     * Atualiza a quantidade de um item no estoque, realizando uma operação de adição ou remoção.
+     * 
+     * @param {string} idCategoria - O ID da categoria à qual o item pertence.
+     * @param {string} nomeItem - O nome do item a ser atualizado.
+     * @param {number} quantidade - A quantidade a ser adicionada ou removida do item.
+     * @param {"adicionar" | "remover"} operacao - A operação a ser realizada: "adicionar" para somar à quantidade existente, ou "remover" para subtrair da quantidade existente.
+     * 
+     * @returns {Promise<{ success: boolean, message: string, error?: string }>} 
+     * Retorna uma promessa com um objeto contendo `success` (indicando sucesso ou falha), `message` (mensagem informativa) e `error` (opcional, em caso de erro).
+     */
     async atualizarQuantidadeItem(idCategoria, nomeItem, quantidade, operacao) {
         try {
             // Verifica se a operação foi fornecida
