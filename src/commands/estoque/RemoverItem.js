@@ -3,6 +3,8 @@ import { CommandInteraction, InteractionContextType } from "discord.js";
 import EstoqueDB from "../../core/database/EstoqueDB";
 import { QuestionEmbed, ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed";
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu";
+import CustomClient from "../../core/handlers/CustomClient";
+import LogEmbedBuilder from "../../core/utils/LogEmbedBuilder";
 
 export default class extends CustomSlashCommandBuilder {
     constructor() {
@@ -14,7 +16,7 @@ export default class extends CustomSlashCommandBuilder {
     }
 
     /**
-     * @param {CommandInteraction} interaction 
+    * @param {CommandInteraction & { client: CustomClient }} interaction - A interação do comando, cujo cliente é do tipo CustomClient.
      */
     run = async (interaction) => {
         // Deferindo a resposta para indicar que o bot está processando a solicitação
@@ -185,5 +187,12 @@ export default class extends CustomSlashCommandBuilder {
             ],
             components: []
         })
+
+        interaction.client.estoqueLogger.log(
+            new LogEmbedBuilder()
+                .setAuthor(interaction.member)
+                .setAction("remover-item", itemRemovido.categoriaData, itemRemovido.itemData)
+                .build()
+        )
     }
 }

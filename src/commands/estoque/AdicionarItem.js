@@ -3,6 +3,8 @@ import { CommandInteraction, InteractionContextType, SlashCommandIntegerOption, 
 import EstoqueDB from "../../core/database/EstoqueDB"
 import { QuestionEmbed, ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed"
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu"
+import CustomClient from "../../core/handlers/CustomClient"
+import LogEmbedBuilder from "../../core/utils/LogEmbedBuilder"
 
 export default class extends CustomSlashCommandBuilder {
     constructor(interaction) {
@@ -26,7 +28,7 @@ export default class extends CustomSlashCommandBuilder {
     }
 
     /**
-    * @param {CommandInteraction} interaction
+    * @param {CommandInteraction & { client: CustomClient }} interaction - A interação do comando, cujo cliente é do tipo CustomClient.
     **/
     run = async (interaction) => {
         // Deferindo a resposta para indicar que o bot está processando a solicitação
@@ -124,6 +126,13 @@ export default class extends CustomSlashCommandBuilder {
                 ],
                 components: []
             })
+
+            interaction.client.estoqueLogger.log(
+                new LogEmbedBuilder()
+                    .setAuthor(interaction.member)
+                    .setAction("adicionar-item", novoItem.categoriaData, novoItem.itemData)
+                    .build()
+            )
 
         } catch (error) {
             // Caso não haja confirmação no SelectMenu, a mensagem é atualizada

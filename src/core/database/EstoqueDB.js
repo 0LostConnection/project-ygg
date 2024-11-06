@@ -203,7 +203,7 @@ export default class EstoqueDB extends Database {
      * @param {string} itemData.nomeItem - Nome do item.
      * @param {number} itemData.quantidadeItem - Quantidade do item.
      * @param {string} itemData.descricaoItem - Descrição do item.
-     * @returns {Promise<{ success: boolean, message: string, categoriaData: { nomeCategoria: string, idCategoria: string }, itemData: { nomeItem: string, quantidadeItem: number, descricaoItem: string }, error?: string }>} 
+     * @returns {Promise<{ success: boolean, message: string, categoriaData: { nomeCategoria: string, idCategoria: string }, itemData: { nomeItem: string, idItem: string, quantidadeItem: number, descricaoItem: string }, error?: string }>} 
      * Retorna um objeto com:
      * - `success`: boolean indicando o sucesso ou falha da operação,
      * - `message`: mensagem informativa,
@@ -228,7 +228,8 @@ export default class EstoqueDB extends Database {
             }
 
             // Verifica a existência do item pelo nome e pelo id da categoria
-            if (await Item.findOne({ nome: nomeItem, idCategoria: categoria._id })) {
+            const verificarItem = await Item.findOne({ nome: nomeItem, idCategoria: categoria._id })
+            if (verificarItem) {
                 return {
                     success: false,
                     message: `O item **${nomeItem}** já existe na categoria **${categoria.nome}**!`,
@@ -238,6 +239,7 @@ export default class EstoqueDB extends Database {
                     },
                     itemData: {
                         nomeItem,
+                        idItem: verificarItem._id, 
                         quantidadeItem,
                         descricaoItem
                     }
@@ -261,10 +263,12 @@ export default class EstoqueDB extends Database {
                 success: true,
                 message: `Item **${nomeItem}** adicionado à categoria **${categoria.nome}** com sucesso!`,
                 categoriaData: {
+                    nomeCategoria: categoria.nome,
                     idCategoria
                 },
                 itemData: {
                     nomeItem,
+                    idItem: novoItem._id,
                     quantidadeItem,
                     descricaoItem
                 }
@@ -290,12 +294,12 @@ export default class EstoqueDB extends Database {
      * Remove um item do estoque.
      * @param {string} idCategoria - O ID da categoria à qual o item pertence.
      * @param {string} nomeItem - O nome do item a ser removido.
-     * @returns {Promise<{ success: boolean, message: string, categoriaData: { nomeCategoria: string, idCategoria: string }, itemData: { nomeItem: string }, error?: string }>} 
+     * @returns {Promise<{ success: boolean, message: string, categoriaData: { nomeCategoria: string, idCategoria: string }, itemData: { nomeItem: string, idItem: string }, error?: string }>} 
      * Retorna um objeto com:
      * - `success`: boolean indicando o sucesso ou falha da operação,
      * - `message`: mensagem informativa,
      * - `categoriaData`: dados da categoria, contendo `nomeCategoria` e `idCategoria`,
-     * - `itemData`: dados do item, contendo `nomeItem`,
+     * - `itemData`: dados do item, contendo `nomeItem` e `idItem`,
      * - `error` (opcional): mensagem de erro em caso de falha.
      */
     async removerItem(idCategoria, nomeItem) {
@@ -349,7 +353,8 @@ export default class EstoqueDB extends Database {
                     idCategoria,
                 },
                 itemData: {
-                    nomeItem
+                    nomeItem,
+                    idItem: item._id
                 }
             }
         } catch (err) {
@@ -373,12 +378,12 @@ export default class EstoqueDB extends Database {
      * @param {string} nomeItem - O nome do item a ser atualizado.
      * @param {number} quantidade - A quantidade a ser adicionada ou removida.
      * @param {"adicionar" | "remover"} operacao - A operação a ser realizada (adicionar ou remover).
-     * @returns {Promise<{ success: boolean, message: string, categoriaData: { nomeCategoria: string, idCategoria: string }, itemData: { nomeItem: string, quantidadeItem: number, descricaoItem: string }, atualizar: { nomeItem: string, quantidade: number, operacao: string }, error?: string }>} 
+     * @returns {Promise<{ success: boolean, message: string, categoriaData: { nomeCategoria: string, idCategoria: string }, itemData: { nomeItem: string, quantidadeItemAntiga: number,  quantidadeItem: number, descricaoItem: string }, atualizar: { nomeItem: string, quantidade: number, operacao: string }, error?: string }>} 
      * Retorna um objeto com:
      * - `success`: boolean indicando o sucesso ou falha da operação,
      * - `message`: mensagem informativa,
      * - `categoriaData`: dados da categoria, contendo `nomeCategoria` e `idCategoria`,
-     * - `itemData`: dados do item, contendo `nomeItem`, `quantidadeItem`, `descricaoItem`,
+     * - `itemData`: dados do item, contendo `nomeItem`, `quantidadeItemAntiga` `quantidadeItem`, `descricaoItem`,
      * - `atualizar`: dados da atualização, contendo `nomeItem`, `quantidade`, e `operacao`,
      * - `error` (opcional): mensagem de erro em caso de falha.
      */
@@ -431,6 +436,7 @@ export default class EstoqueDB extends Database {
                     }
                 }
             }
+            let quantidadeAntiga = item.quantidade
 
             // Executa a operação de atualização de quantidade
             switch (operacao) {
@@ -473,6 +479,7 @@ export default class EstoqueDB extends Database {
                 },
                 itemData: {
                     nomeItem,
+                    quantidadeItemAntiga: quantidadeAntiga,
                     quantidadeItem: item.quantidade,
                     descricaoItem: item.descricao
                 },

@@ -2,6 +2,8 @@ import CustomSlashCommandBuilder from "../../core/builders/CustomSlashCommandBui
 import { CommandInteraction, InteractionContextType, SlashCommandStringOption } from "discord.js"
 import EstoqueDB from "../../core/database/EstoqueDB"
 import { ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed"
+import CustomClient from "../../core/handlers/CustomClient"
+import LogEmbedBuilder from "../../core/utils/LogEmbedBuilder"
 
 export default class extends CustomSlashCommandBuilder {
     constructor(interaction) {
@@ -19,7 +21,7 @@ export default class extends CustomSlashCommandBuilder {
     }
 
     /**
-    * @param {CommandInteraction} interaction
+    * @param {CommandInteraction & { client: CustomClient }} interaction - A interação do comando, cujo cliente é do tipo CustomClient.
     **/
     run = async (interaction) => {
         // Deferindo a resposta para indicar que o bot está processando a solicitação
@@ -52,5 +54,13 @@ export default class extends CustomSlashCommandBuilder {
 
         // Confirma a criação da nova categoria
         interaction.editReply({ embeds: [new SuccessEmbed(novaCategoria.message)] })
+
+        interaction.client.estoqueLogger.log(
+            new LogEmbedBuilder()
+                .setAuthor(interaction.member)
+                .setAction("criar-categoria", novaCategoria.categoriaData)
+                .build()
+
+        )
     }
 }

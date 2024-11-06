@@ -5,6 +5,7 @@ import { QuestionEmbed, ErrorEmbed } from "../../core/utils/CustomEmbed";
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu";
 import { ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputBuilder } from "@discordjs/builders";
 import { ButtonStyle, TextInputStyle } from "discord-api-types/v10";
+import CustomClient from "../../core/handlers/CustomClient";
 
 export default class extends CustomSlashCommandBuilder {
     constructor() {
@@ -16,7 +17,7 @@ export default class extends CustomSlashCommandBuilder {
     }
 
     /**
-     * @param {CommandInteraction} interaction 
+    * @param {CommandInteraction & { client: CustomClient }} interaction - A interação do comando, cujo cliente é do tipo CustomClient.
      */
     run = async (interaction) => {
         // Deferindo a resposta para indicar que o bot está processando a solicitação

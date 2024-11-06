@@ -3,6 +3,8 @@ import { CommandInteraction, InteractionContextType } from "discord.js"
 import EstoqueDB from "../../core/database/EstoqueDB"
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu"
 import { ErrorEmbed, ProductStockEmbed, QuestionEmbed } from "../../core/utils/CustomEmbed"
+import LogEmbedBuilder from "../../core/utils/LogEmbedBuilder"
+import CustomClient from "../../core/handlers/CustomClient"
 
 export default class extends CustomSlashCommandBuilder {
     constructor() {
@@ -13,9 +15,9 @@ export default class extends CustomSlashCommandBuilder {
         this.setContexts(InteractionContextType.Guild)
         this.setDebug(true)
     }
-    
+
     /**
-    * @param {CommandInteraction} interaction
+    * @param {CommandInteraction & { client: CustomClient }} interaction - A interação do comando, cujo cliente é do tipo CustomClient.
     **/
     run = async (interaction) => {
         // Deferindo a resposta para indicar que o bot está processando a solicitação
@@ -115,10 +117,18 @@ export default class extends CustomSlashCommandBuilder {
                 ],
                 components: []
             })
+
+            interaction.client.estoqueLogger.log(
+                new LogEmbedBuilder()
+                    .setAuthor(interaction.member)
+                    .setAction("ver-estoque", { nomeCategoria: nomeCategoria })
+                    .build()
+            )
+
         } catch (error) {
             // Desconecta do banco de dados
             await estoqueDB.disconnect()
-            
+
             // Caso não haja confirmação no SelectMenu, a mensagem é atualizada
             return await interaction.editReply({
                 embeds: [

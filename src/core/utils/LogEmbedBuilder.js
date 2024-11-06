@@ -1,90 +1,97 @@
-import { EmbedBuilder } from "@discordjs/builders"
-import { GuildMember } from "discord.js"
+import { EmbedBuilder } from "@discordjs/builders";
+import { GuildMember } from "discord.js";
 
 export default class LogEmbedBuilder {
-    static embed = new EmbedBuilder()
-        .setColor(0xE7DDFF)
-
-    constructor() { }
+    constructor() {
+        this.embed = new EmbedBuilder()
+            .setColor(0xE7DDFF);
+    }
 
     /**
-     * 
-     * @param {GuildMember} member 
+     * Define o autor do embed com base no membro fornecido.
+     * @param {GuildMember} member - O membro do Discord que executou a ação.
+     * @returns {LogEmbedBuilder} A instância atualizada do LogEmbedBuilder.
      */
     setAuthor(member) {
-        LogEmbedBuilder.embed.setAuthor({
+        this.embed.setAuthor({
             name: member.displayName,
             iconURL: member.displayAvatarURL()
-        })
-        return this
+        });
+        return this;
     }
 
     /**
      * Define o conteúdo do embed com base na ação e dados fornecidos.
-     * @param {String!} acao - (Obrigatório) O comando que o bot executa.
-     * @param {String} [categoria] - A categoria do item, se aplicável.
-     * @param {String} [item] - O nome do item, se aplicável.
-     * @param {Number} [quantidade] - A quantidade do item, se aplicável.
-     * @param {String} [operacao] - A operação executada (usada apenas para 'atualizar-item').
+     * @param {String} acao - (Obrigatório) O comando que o bot executa.
+     * @param {Object} [categoriaData] - Dados da categoria.
+     * @param {String} categoriaData.nomeCategoria - Nome da categoria.
+     * @param {String} categoriaData.idCategoria - ID da categoria.
+     * @param {Object} [itemData] - Dados do item.
+     * @param {String} itemData.nomeItem - Nome do item.
+     * @param {String} itemData.idItem - ID do item.
+     * @param {Number} itemData.quantidadeItemAntiga - A quantidade do item antiga, se aplicável.
+     * @param {Number} itemData.quantidadeItem - A quantidade do item atual, se aplicável.
+     * @param {String} [operacao=''] - A operação executada (usada apenas para 'atualizar-item').
+     * @returns {LogEmbedBuilder} A instância atualizada do LogEmbedBuilder.
      */
-    setAction(comando, categoria = '', item = '', quantidade = 0, opercomando = '') {
+    setAction(acao, categoriaData = {}, itemData = {}, operacao = '') {
         // Configura o título do embed com base na ação
-        LogEmbedBuilder.embed.setTitle(`Ação: ${comando}`)
+        this.embed.setTitle(`Ação: ${acao}`);
 
         // Verifica qual ação foi executada e adiciona os campos apropriados ao embed
-        switch (comando) {
+        switch (acao) {
             case 'adicionar-item':
-                LogEmbedBuilder.embed.addFields(
-                    { name: 'Item', value: item, inline: true },
-                    { name: 'Quantidade', value: String(quantidade), inline: true },
-                    { name: 'Categoria', value: categoria, inline: true }
-                )
-                break
+                this.embed.addFields(
+                    { name: 'Item', value: itemData.nomeItem || 'Desconhecido', inline: true },
+                    { name: 'Quantidade', value: String(itemData.quantidadeItem), inline: true },
+                    { name: 'Categoria', value: categoriaData.nomeCategoria || 'Desconhecida', inline: true }
+                );
+                break;
 
             case 'atualizar-item':
-                LogEmbedBuilder.embed.addFields(
-                    { name: 'Categoria', value: categoria, inline: true },
-                    { name: 'Item', value: item, inline: true },
-                    { name: 'Quantidade', value: String(quantidade), inline: true },
-                    { name: 'Operação', value: opercomando, inline: true }
-                )
-                break
+                this.embed.addFields(
+                    { name: 'Categoria', value: categoriaData.nomeCategoria || 'Desconhecida', inline: true },
+                    { name: 'Item', value: itemData.nomeItem || 'Desconhecido', inline: true },
+                    { name: 'Quantidade Antiga', value: String(itemData.quantidadeItemAntiga), inline: true },
+                    { name: 'Quantidade Atual', value: String(itemData.quantidadeItem), inline: true },
+                    { name: 'Operação', value: operacao || 'Não especificada', inline: true }
+                );
+                break;
 
             case 'criar-categoria':
-                LogEmbedBuilder.embed.addFields(
-                    { name: 'Nome da Categoria', value: categoria, inline: true }
-                )
-                break
+                this.embed.addFields(
+                    { name: 'Nome da Categoria', value: categoriaData.nomeCategoria || 'Desconhecida', inline: true },
+                    { name: 'Id da Categoria', value: categoriaData.idCategoria.toString() || 'Desconhecida', inline: true }
+                );
+                break;
 
             case 'remover-item':
-                LogEmbedBuilder.embed.addFields(
-                    { name: 'Categoria', value: categoria, inline: true },
-                    { name: 'Item', value: item, inline: true }
-                )
-                break
+                this.embed.addFields(
+                    { name: 'Categoria', value: categoriaData.nomeCategoria || 'Desconhecida', inline: true },
+                    { name: 'Item', value: itemData.nomeItem || 'Desconhecido', inline: true }
+                );
+                break;
 
             case 'ver-estoque':
-                LogEmbedBuilder.embed.addFields(
-                    { name: 'Categoria', value: categoria, inline: true }
-                )
-                break
+                this.embed.addFields(
+                    { name: 'Categoria', value: categoriaData.nomeCategoria || 'Desconhecida', inline: true }
+                );
+                break;
 
             default:
-                LogEmbedBuilder.embed.addFields(
+                this.embed.addFields(
                     { name: 'Erro', value: 'Ação inválida ou dados ausentes.' }
-                )
-                break
+                );
+                break;
         }
-        return this
+        return this;
     }
-
 
     /**
      * Retorna o embed finalizado.
-     * 
      * @returns {EmbedBuilder} O embed configurado.
      */
     build() {
-        return LogEmbedBuilder.embed
+        return this.embed;
     }
 }

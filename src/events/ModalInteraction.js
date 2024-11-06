@@ -88,7 +88,7 @@ export default class extends EventBuilder {
                 this.client.estoqueLogger.log(
                     new LogEmbedBuilder()
                         .setAuthor(interaction.member)
-                        .setAction("atualizar-item", itemAtualizado.categoriaData.nomeCategoria, nomeItem, quantidade, operacao)
+                        .setAction("atualizar-item", itemAtualizado.categoriaData, itemAtualizado.itemData, operacao)
                         .build()
                 )
         }
