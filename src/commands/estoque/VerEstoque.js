@@ -116,6 +116,9 @@ export default class extends CustomSlashCommandBuilder {
                 components: []
             })
         } catch (error) {
+            // Desconecta do banco de dados
+            await estoqueDB.disconnect()
+            
             // Caso não haja confirmação no SelectMenu, a mensagem é atualizada
             return await interaction.editReply({
                 embeds: [
