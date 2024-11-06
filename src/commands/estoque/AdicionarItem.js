@@ -70,8 +70,8 @@ export default class extends CustomSlashCommandBuilder {
                     "estoque:selecionar:categorias",
                     "Escolha uma categoria",
                     categorias.data.map(obj => ({
-                        label: obj.nome,
-                        value: obj.id.toString()
+                        label: obj.nomeCategoria,
+                        value: obj.idCategoria.toString()
                     }))
                 )
             ]
@@ -97,8 +97,8 @@ export default class extends CustomSlashCommandBuilder {
             const novoItem = await estoqueDB.adicionarItem(
                 idCategoria,
                 {
-                    nome: nomeNovoItem,
-                    quantidade: quantidadeNovoItem
+                    nomeItem: nomeNovoItem,
+                    quantidadeItem: quantidadeNovoItem
                 }
             )
 
@@ -111,7 +111,7 @@ export default class extends CustomSlashCommandBuilder {
                     embeds: [
                         new ErrorEmbed(
                             novoItem.message,
-                            categorias.error ? `\`\`\`${categorias.error}\`\`\`` : null)
+                            novoItem.error ? `\`\`\`${novoItem.error}\`\`\`` : null)
                     ],
                     components: []
                 })

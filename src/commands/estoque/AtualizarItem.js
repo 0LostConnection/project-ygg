@@ -58,8 +58,8 @@ export default class extends CustomSlashCommandBuilder {
                     "estoque:selecionar:categorias",
                     "Escolha uma categoria",
                     categorias.data.map(obj => ({
-                        label: obj.nome,
-                        value: obj.id.toString()
+                        label: obj.nomeCategoria,
+                        value: obj.idCategoria.toString()
                     }))
                 )
             ]
@@ -110,7 +110,8 @@ export default class extends CustomSlashCommandBuilder {
 
             return await interaction.editReply({
                 embeds: [
-                    new ErrorEmbed(categorias.message,
+                    new ErrorEmbed(
+                        itens.message,
                         itens.error ? `\`\`\`${itens.error}\`\`\`` : null)
                 ],
                 components: []
@@ -129,8 +130,8 @@ export default class extends CustomSlashCommandBuilder {
                     "estoque:selecionar:itens",
                     "Escolha um item",
                     itens.data.map(obj => ({
-                        label: obj.nome,
-                        value: obj.nome
+                        label: obj.nomeItem,
+                        value: obj.nomeItem
                     }))
                 )
             ]

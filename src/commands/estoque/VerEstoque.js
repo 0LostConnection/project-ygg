@@ -55,8 +55,8 @@ export default class extends CustomSlashCommandBuilder {
                     "estoque:selecionar:categorias",
                     "Escolha uma categoria",
                     categorias.data.map(obj => ({
-                        label: obj.nome,
-                        value: obj.id.toString()
+                        label: obj.nomeCategoria,
+                        value: obj.idCategoria.toString()
                     }))
                 )
             ]
@@ -81,7 +81,7 @@ export default class extends CustomSlashCommandBuilder {
             3. Obtém a lista de itens da categoria 
             */
             const idCategoria = confirmacao.values[0]
-            const nomeCategoria = (await estoqueDB.obterNomeCategoria(idCategoria)).nomeCategoria
+            const nomeCategoria = (await estoqueDB.obterNomeCategoria(idCategoria)).categoriaData.nomeCategoria
             const itens = await estoqueDB.listarItensPorCategoria(idCategoria)
 
             // Desconecta do banco de dados
@@ -102,7 +102,7 @@ export default class extends CustomSlashCommandBuilder {
             // Transforma os dados dos itens obtidos no formato que será utilizado nos Fields do Embed
             let estoqueArray = []
             itens.data.forEach(item => {
-                estoqueArray.push({ name: item.nome, value: String(item.quantidade) })
+                estoqueArray.push({ name: item.nomeItem, value: String(item.quantidadeItem) })
             })
 
             // Atualiza a mensagem da interação com a lista dos itens

@@ -25,7 +25,7 @@ export default class EstoqueDB extends Database {
     async criarCategoria(nomeCategoria) {
         try {
             // Verifica a existência da categoria
-            if (await CategoriaEstoque.findOne({ nomeCategoria })) {
+            if (await CategoriaEstoque.findOne({ nome: nomeCategoria })) {
                 return {
                     success: false,
                     message: `A categoria **${nomeCategoria}** já existe!`,
@@ -36,7 +36,7 @@ export default class EstoqueDB extends Database {
             }
 
             // Instancia uma nova categoria e a salva
-            const categoria = new CategoriaEstoque({ nomeCategoria })
+            const categoria = new CategoriaEstoque({ nome: nomeCategoria })
             await categoria.save()
 
             return {
@@ -85,7 +85,7 @@ export default class EstoqueDB extends Database {
             return {
                 success: true,
                 message: "Categorias listadas com sucesso!",
-                data: categorias.map(categoria => ({ nomeCategoria: categoria.nome, idCateogira: categoria._id })),
+                data: categorias.map(categoria => ({ nomeCategoria: categoria.nome, idCategoria: categoria._id })),
             }
         } catch (err) {
             return {
@@ -228,7 +228,7 @@ export default class EstoqueDB extends Database {
             }
 
             // Verifica a existência do item pelo nome e pelo id da categoria
-            if (await Item.findOne({ nomeItem, idCategoria: categoria._id })) {
+            if (await Item.findOne({ nome: nomeItem, idCategoria: categoria._id })) {
                 return {
                     success: false,
                     message: `O item **${nomeItem}** já existe na categoria **${categoria.nome}**!`,
@@ -246,7 +246,7 @@ export default class EstoqueDB extends Database {
 
             // Instancia um novo item e o salva
             const novoItem = new Item({
-                nome: nome,
+                nome: nomeItem,
                 quantidade: quantidadeItem,
                 descricao: descricaoItem,
                 idCategoria: categoria._id
@@ -259,7 +259,7 @@ export default class EstoqueDB extends Database {
 
             return {
                 success: true,
-                message: `Item **${nome}** adicionado à categoria **${categoria.nome}** com sucesso!`,
+                message: `Item **${nomeItem}** adicionado à categoria **${categoria.nome}** com sucesso!`,
                 categoriaData: {
                     idCategoria
                 },

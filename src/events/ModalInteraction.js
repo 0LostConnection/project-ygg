@@ -72,7 +72,12 @@ export default class extends EventBuilder {
                 // Envia uma resposta ao usuário indicando o sucesso ou erro da operação
                 if (!itemAtualizado.success) {
                     return interaction.reply({
-                        embeds: [new ErrorEmbed(itemAtualizado.message, itemAtualizado.error ? `\`\`\`${itemAtualizado.error}\`\`\`` : null)],
+                        embeds: [
+                            new ErrorEmbed(
+                                itemAtualizado.message,
+                                itemAtualizado.error ? `\`\`\`${itemAtualizado.error}\`\`\`` : null
+                            )
+                        ],
                     })
                 }
 
@@ -83,7 +88,7 @@ export default class extends EventBuilder {
                 this.client.estoqueLogger.log(
                     new LogEmbedBuilder()
                         .setAuthor(interaction.member)
-                        .setAction("atualizar-item", idCategoria, nomeItem, quantidade, operacao)
+                        .setAction("atualizar-item", itemAtualizado.categoriaData.nomeCategoria, nomeItem, quantidade, operacao)
                         .build()
                 )
         }
