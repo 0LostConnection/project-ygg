@@ -1,20 +1,18 @@
-import { CommandInteraction, ComponentType } from "discord.js";
-import CommandStructure from "../../core/structures/CommandStructure";
+import CustomSlashCommandBuilder from "../../core/builders/CustomSlashCommandBuilder"
+import { CommandInteraction, ComponentType, InteractionContextType } from "discord.js";
 import EstoqueDB from "../../core/database/EstoqueDB";
-import { QuestionEmbed, ErrorEmbed, SuccessEmbed } from "../../core/utils/CustomEmbed";
+import { QuestionEmbed, ErrorEmbed } from "../../core/utils/CustomEmbed";
 import CustomSelectMenu from "../../core/utils/CustomSelectMenu";
 import { ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputBuilder } from "@discordjs/builders";
 import { ButtonStyle, TextInputStyle } from "discord-api-types/v10";
 
-export default class extends CommandStructure {
-    constructor(interaction) {
-        super(interaction, {
-            name: "atualizar-item",
-            description: "Atualiza um item de uma categoria específica.",
-            dm_permission: false,
-            debug: true
-        })
-        this.quantidade
+export default class extends CustomSlashCommandBuilder {
+    constructor() {
+        super()
+        this.setName("atualizar-item")
+        this.setDescription("Atualiza um item de uma categoria específica.")
+        this.setContexts(InteractionContextType.Guild)
+        this.setDebug(true)
     }
 
     /**
