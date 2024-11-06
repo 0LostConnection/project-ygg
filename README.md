@@ -11,10 +11,10 @@
 - [x] Criar o comando Remover Item utilizando SelectMenu para escolher o item
 - [x] Criar o comando Atualizar Quantidade Item (talvez todo o item) utilizando SelectMenu para escolher o item
 - [x] Utilizar builders para criar a estrutura do comando
-- [ ] Ver a possibilidade de usar mensagens efêmeras
+- [x] Verificar se "operacao" existe no EstoqueDB - Atualizar Item
+- [x] Atualizar JSdocs no EstoqueDB - Atualizar Item
 - [ ] Criar sistema de logs
-- [ ] Customizar a aparência do bot
-- [ ] Usar emojis customizados nas mensagens?
-- [ ] Verificar se a operacao é undefined ou null EstoqueDB
-- [ ] Adicionar JSdocs à atualizar item EstoqueDB
 - [ ] Adicionar permissões
+- [ ] Customizar a aparência do bot
+- [ ] Ver a possibilidade de usar mensagens efêmeras
+- [ ] Usar emojis customizados nas mensagens?

@@ -212,46 +212,57 @@ export default class extends Database {
     }
 
     /**
-     * Atualiza a quantidade de um item no estoque.
-     * @param {string} idCategoria - O id da categoria à qual o item será atualizado.
-     * @param {string} nomeItem - O nome do item a ser atualizado.
-     * @param {number} quantidade - A nova quantidade do item.
-     * @returns {Promise<{ success: boolean, message: string, error?: string }>} 
-     * Retorna um objeto com `success`, `message` e `error` (opcional).
-     */
+    * Atualiza a quantidade de um item no estoque, realizando uma operação de adição ou remoção.
+    * 
+    * @param {string} idCategoria - O ID da categoria à qual o item pertence.
+    * @param {string} nomeItem - O nome do item a ser atualizado.
+    * @param {number} quantidade - A quantidade a ser adicionada ou removida do item.
+    * @param {"adicionar" | "remover"} operacao - A operação a ser realizada: "adicionar" para somar à quantidade existente, ou "remover" para subtrair da quantidade existente.
+    * 
+    * @returns {Promise<{ success: boolean, message: string, error?: string }>} 
+    * Retorna uma promessa com um objeto contendo `success` (indicando sucesso ou falha), `message` (mensagem informativa) e `error` (opcional, em caso de erro).
+    */
     async atualizarQuantidadeItem(idCategoria, nomeItem, quantidade, operacao) {
         try {
-            // Procura a categoria por id
-            const categoria = await CategoriaEstoque.findById(idCategoria)
+            // Verifica se a operação foi fornecida
+            if (!operacao) {
+                return { success: false, message: "Operação não especificada. Forneça 'adicionar' ou 'remover'." };
+            }
+
+            // Procura a categoria por ID
+            const categoria = await CategoriaEstoque.findById(idCategoria);
 
             // Verifica a existência da categoria
             if (!categoria) {
-                return { success: false, message: "Categoria não encontrada!" }
+                return { success: false, message: "Categoria não encontrada!" };
             }
 
-            // Procura o item pelo nome e pelo id da categoria
-            const item = await Item.findOne({ nome: nomeItem, idCategoria: categoria._id })
+            // Procura o item pelo nome e pelo ID da categoria
+            const item = await Item.findOne({ nome: nomeItem, idCategoria: categoria._id });
 
             // Verifica a existência do item
             if (!item) {
-                return { success: false, message: "Item não encontrado!" }
+                return { success: false, message: "Item não encontrado!" };
             }
 
+            // Executa a operação de atualização de quantidade
             switch (operacao) {
                 case "adicionar":
-                    item.quantidade += quantidade
-                    break
+                    item.quantidade += quantidade;
+                    break;
                 case "remover":
-                    item.quantidade -= quantidade
-                    break
+                    item.quantidade -= quantidade;
+                    break;
+                default:
+                    return { success: false, message: `Operação inválida: '${operacao}'. Use 'adicionar' ou 'remover'.` };
             }
 
             // Salva a quantidade atualizada
-            await item.save()
+            await item.save();
 
-            return { success: true, message: `Item **${nomeItem}** atualizado com sucesso!` }
+            return { success: true, message: `Item **${nomeItem}** atualizado com sucesso!` };
         } catch (err) {
-            return { success: false, message: "Erro ao atualizar item.", error: err.message }
+            return { success: false, message: "Erro ao atualizar item.", error: err.message };
         }
     }
 }
